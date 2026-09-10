@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Concursos Abertos — Human Concursos</title>
+    <meta
+      name="description"
+      content="Concursos com inscrições abertas na área de Segurança Pública e afins."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body data-page="concursos-abertos">
+    <header>
+      <div class="wrap nav">
+        <a href="index.html" class="brand">
+          <span class="brand-badge">HC</span>
+          <span class="brand-name">HUMAN <b>CONCURSOS</b></span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="index.html" data-nav="inicio">Início</a></li>
+          <li><a href="apostilas.html" data-nav="apostilas">Apostilas</a></li>
+          <li>
+            <a href="concursos-abertos.html" data-nav="concursos-abertos"
+              >Concursos Abertos</a
+            >
+          </li>
+          <li><a href="em-breve.html" data-nav="em-breve">Em Breve</a></li>
+          <li><a href="sobre.html" data-nav="sobre">Sobre</a></li>
+        </ul>
+        <a
+          class="nav-cta"
+          id="btnNavWpp"
+          href="#"
+          target="_blank"
+          rel="noopener"
+          >Falar no WhatsApp</a
+        >
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          aria-expanded="false"
+          aria-controls="mobilePanel"
+          aria-label="Abrir menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <nav class="mobile-panel" id="mobilePanel">
+        <a href="index.html" data-nav="inicio">Início</a>
+        <a href="apostilas.html" data-nav="apostilas">Apostilas</a>
+        <a href="concursos-abertos.html" data-nav="concursos-abertos"
+          >Concursos Abertos</a
+        >
+        <a href="em-breve.html" data-nav="em-breve">Em Breve</a>
+        <a href="sobre.html" data-nav="sobre">Sobre</a>
+        <a
+          class="nav-cta"
+          id="btnMobileWpp"
+          href="#"
+          target="_blank"
+          rel="noopener"
+          >Falar no WhatsApp</a
+        >
+      </nav>
+    </header>
+
+    <div class="page-header">
+      <div class="wrap">
+        <span class="eyebrow">Art. 03 — Concursos Abertos</span>
+        <h1>Inscrições em andamento</h1>
+        <p>
+          Editais de Segurança Pública e áreas afins com inscrições abertas
+          neste momento. Toque em "quero me preparar" para falar direto com a
+          mentoria sobre aquele concurso.
+        </p>
+      </div>
+    </div>
+
+    <main>
+      <section>
+        <div class="wrap">
+          <!--
+        Os cartões abaixo são carregados automaticamente a partir de
+        assets/data/concursos.json (todo item com "status": "aberto").
+        Para adicionar, remover ou editar um concurso, use o
+        gerador-concurso.html (abra no navegador) — ele gera o JSON
+        pronto para substituir o arquivo atual.
+      -->
+
+          <div class="concurso-grid" id="concursoGrid">
+            <div class="concurso-empty">Carregando concursos…</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="alt">
+        <div class="wrap">
+          <div class="cta-banner">
+            <h3>Não achou o concurso que procura?</h3>
+            <a
+              class="btn btn-primary wpp-link"
+              data-msg="Olá! Vim pelo site da Human Concursos e quero saber sobre concursos abertos na área de Segurança Pública."
+              href="#"
+              target="_blank"
+              rel="noopener"
+              >Falar no WhatsApp</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <span class="brand-name" style="color: #fff"
+              >HUMAN <b style="color: #e31e24">CONCURSOS</b></span
+            >
+            <p>
+              Mentoria de concursos para Segurança Pública, feita por quem
+              também estuda, presta e vive a rotina da farda.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h5>Navegação</h5>
+            <ul>
+              <li><a href="index.html">Início</a></li>
+              <li><a href="apostilas.html">Apostilas</a></li>
+              <li><a href="concursos-abertos.html">Concursos Abertos</a></li>
+              <li><a href="em-breve.html">Em Breve</a></li>
+              <li><a href="sobre.html">Sobre</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Contato</h5>
+            <ul>
+              <li><a href="sobre.html#contato">WhatsApp</a></li>
+              <li>
+                <a
+                  href="https://www.instagram.com/mentoriatomaz"
+                  target="_blank"
+                  rel="noopener"
+                  >Instagram</a
+                >
+              </li>
+              <li><a href="mailto:contato@humanconcursos.com.br">E-mail</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 Human Concursos — "Seu objetivo é a nossa missão."</span>
+          <span
+            >Desenvolvido por
+            <a href="#" style="color: #c9ccda; text-decoration: underline"
+              >Maurílio Vieira</a
+            ></span
+          >
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/concursos-render.js"></script>
+    <script>
+      hcLoadConcursos(
+        "aberto",
+        "concursoGrid",
+        "Nenhum concurso com inscrições abertas no momento. Volte em breve!",
+      );
+    </script>
+  </body>
+</html>

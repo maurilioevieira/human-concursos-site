@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Concursos — Human Concursos (uso interno)</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+
+<style>
+  /* Estilos exclusivos desta ferramenta interna — não afeta o site público. */
+  .tool-wrap{max-width:1180px; margin:0 auto; padding:36px 28px 90px;}
+  .tool-header{margin-bottom:32px;}
+  .tool-header h1{font-size:26px; text-transform:uppercase; color:var(--navy-900); font-family:var(--display); font-weight:600;}
+  .tool-header p{color:var(--ink-muted); font-size:14.5px; margin-top:8px; max-width:640px;}
+  .tool-grid{display:grid; grid-template-columns:1fr 1fr; gap:36px; align-items:start;}
+
+  .tool-panel{background:var(--white); border:1px solid var(--line); border-radius:8px; padding:26px;}
+  .tool-panel h2{font-size:15px; text-transform:uppercase; color:var(--navy-900); font-family:var(--display); font-weight:600; margin-bottom:18px;}
+
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:12.5px; font-weight:700; color:var(--navy-900); margin-bottom:6px;}
+  .field .hint{display:block; font-size:11.5px; color:var(--ink-muted); font-weight:400; margin-top:4px;}
+  .field input[type=text], .field select, .field textarea{
+    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:5px;
+    font-family:var(--body); font-size:14px; color:var(--ink); background:var(--white);
+  }
+  .field textarea{resize:vertical; min-height:64px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .field-check{display:flex; align-items:center; gap:8px; font-size:13.5px; color:var(--ink);}
+
+  .tool-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;}
+  .tool-actions button{
+    font-family:var(--body); font-weight:700; font-size:13.5px; padding:11px 18px; border-radius:5px;
+    border:1.5px solid transparent; cursor:pointer; transition:background .15s ease, transform .15s ease;
+  }
+  .btn-add{background:var(--navy-900); color:var(--white);}
+  .btn-add:hover{background:var(--red-500);}
+  .btn-clear{background:transparent; border-color:var(--line); color:var(--ink-muted);}
+  .btn-clear:hover{border-color:var(--navy-600); color:var(--navy-900);}
+
+  .preview-slot{margin-bottom:22px;}
+  .preview-slot .concurso-grid{gap:0;}
+
+  .list-panel{margin-top:26px;}
+  .list-row{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:12px 14px; border:1px solid var(--line); border-radius:6px; margin-bottom:10px; font-size:13.5px;
+  }
+  .list-row .info strong{display:block; color:var(--navy-900);}
+  .list-row .info span{color:var(--ink-muted); font-size:12.5px;}
+  .list-row .row-actions{display:flex; gap:8px; flex-shrink:0;}
+  .list-row button{
+    font-size:12px; font-weight:700; padding:6px 10px; border-radius:4px; border:1px solid var(--line);
+    background:var(--white); cursor:pointer; color:var(--ink-muted);
+  }
+  .list-row button:hover{border-color:var(--navy-600); color:var(--navy-900);}
+  .list-row button.danger:hover{border-color:var(--red-500); color:var(--red-500);}
+
+  .export-panel{margin-top:26px; padding-top:22px; border-top:1px solid var(--line);}
+  .file-input-wrap{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px;
+  }
+  .file-input-wrap input[type=file]{font-size:13px;}
+  .btn-download{
+    display:inline-flex; align-items:center; gap:8px; background:var(--red-500); color:var(--white);
+    font-weight:700; font-size:14px; padding:13px 22px; border-radius:5px; border:none; cursor:pointer;
+    transition:background .15s ease;
+  }
+  .btn-download:hover{background:var(--red-600);}
+  .export-count{font-size:13px; color:var(--ink-muted); margin-top:10px;}
+
+  @media (max-width:860px){
+    .tool-grid{grid-template-columns:1fr;}
+    .field-row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand">
+      <span class="brand-badge">HC</span>
+      <span class="brand-name">HUMAN <b>CONCURSOS</b></span>
+    </a>
+    <span style="font-family:var(--mono); font-size:11.5px; color:#9FA3BC; letter-spacing:.06em; text-transform:uppercase;">Ferramenta interna</span>
+  </div>
+</header>
+
+<div class="tool-wrap">
+  <div class="tool-header">
+    <h1>Gerador de Concursos</h1>
+    <p>Preencha os dados de um concurso, veja a pré-visualização exata do cartão e baixe o arquivo <code>concursos.json</code> atualizado para substituir no repositório do site. Esta página não é linkada no menu do site — só quem tem o link chega aqui.</p>
+  </div>
+
+  <div class="tool-grid">
+    <!-- ================= FORMULÁRIO ================= -->
+    <div class="tool-panel">
+      <h2>Dados do concurso</h2>
+
+      <div class="field">
+        <label>Página de destino</label>
+        <select id="fStatus">
+          <option value="aberto">Concursos Abertos (inscrições em andamento)</option>
+          <option value="previsto">Em Breve (edital ainda não saiu)</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Órgão / Instituição</label>
+          <input type="text" id="fOrgao" placeholder="Ex.: Prefeitura Municipal de Fortaleza/CE">
+        </div>
+        <div class="field">
+          <label>Banca organizadora</label>
+          <input type="text" id="fBanca" placeholder="Ex.: Instituto AOCP">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Cargo</label>
+        <input type="text" id="fCargo" placeholder="Ex.: Guarda Municipal">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Vagas</label>
+          <input type="text" id="fVagas" placeholder="Ex.: 1.000 ou ~50">
+        </div>
+        <div class="field">
+          <label>Escolaridade</label>
+          <input type="text" id="fEscolaridade" placeholder="Ex.: Nível médio">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Salário</label>
+          <input type="text" id="fSalario" placeholder="Ex.: Até R$ 5.000,00 ou A confirmar">
+        </div>
+        <div class="field">
+          <label id="lPrazo">Inscrições até</label>
+          <input type="text" id="fPrazo" placeholder="Ex.: 00/00/0000 ou A confirmar">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Imagem do concurso</label>
+        <input type="text" id="fImagem" placeholder="assets/img/concursos/nome-do-arquivo.jpg">
+        <span class="hint">Envie a imagem para a pasta <code>assets/img/concursos/</code> do repositório pelo GitHub (mesmo processo de sempre) e cole aqui o caminho. Deixe em branco para usar um ícone padrão.</span>
+      </div>
+
+      <div class="field">
+        <label>Mensagem do WhatsApp</label>
+        <textarea id="fMsg" placeholder="Gerada automaticamente ao preencher o cargo — edite se quiser."></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-check"><input type="checkbox" id="fExemplo"> Marcar como cartão de exemplo (selo "Exemplo" em vez do status real)</label>
+      </div>
+
+      <div class="tool-actions">
+        <button class="btn-add" id="btnAdd" type="button">Adicionar à lista</button>
+        <button class="btn-clear" id="btnClear" type="button">Limpar formulário</button>
+      </div>
+    </div>
+
+    <!-- ================= PRÉ-VISUALIZAÇÃO + LISTA ================= -->
+    <div>
+      <div class="tool-panel preview-slot">
+        <h2>Pré-visualização</h2>
+        <div class="concurso-grid" id="previewSlot"></div>
+      </div>
+
+      <div class="tool-panel list-panel">
+        <h2>Itens nesta sessão (<span id="countItems">0</span>)</h2>
+        <div id="listSlot"></div>
+      </div>
+
+      <div class="tool-panel export-panel">
+        <h2>Carregar / Exportar</h2>
+        <div class="file-input-wrap">
+          <label for="fileLoad" style="font-size:13px; color:var(--ink-muted);">Carregar concursos.json atual:</label>
+          <input type="file" id="fileLoad" accept="application/json">
+        </div>
+        <button class="btn-download" id="btnDownload" type="button">⬇ Baixar concursos.json atualizado</button>
+        <p class="export-count"><span id="countExport">0</span> concurso(s) serão salvos no arquivo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/concursos-render.js"></script>
+<script>
+  let items = [];
+
+  const $ = (id) => document.getElementById(id);
+  const fStatus = $("fStatus"), fOrgao = $("fOrgao"), fBanca = $("fBanca"), fCargo = $("fCargo"),
+        fVagas = $("fVagas"), fEscolaridade = $("fEscolaridade"), fSalario = $("fSalario"),
+        fPrazo = $("fPrazo"), fImagem = $("fImagem"), fMsg = $("fMsg"), fExemplo = $("fExemplo"),
+        lPrazo = $("lPrazo");
+
+  function slugify(str) {
+    return (str || "item")
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "") || "item";
+  }
+
+  function currentFormData() {
+    return {
+      id: slugify(fCargo.value + "-" + fOrgao.value) + "-" + Date.now().toString().slice(-5),
+      status: fStatus.value,
+      exemplo: fExemplo.checked,
+      banca: fBanca.value.trim(),
+      orgao: fOrgao.value.trim(),
+      cargo: fCargo.value.trim(),
+      vagas: fVagas.value.trim(),
+      escolaridade: fEscolaridade.value.trim(),
+      salario: fSalario.value.trim(),
+      prazo: fPrazo.value.trim(),
+      imagem: fImagem.value.trim(),
+      whatsappMsg: fMsg.value.trim(),
+    };
+  }
+
+  function updatePrazoLabel() {
+    lPrazo.textContent = fStatus.value === "previsto" ? "Previsão de edital" : "Inscrições até";
+  }
+
+  function suggestMsg() {
+    if (fMsg.dataset.touched === "1") return;
+    const cargo = fCargo.value.trim();
+    if (!cargo) return;
+    fMsg.value = fStatus.value === "previsto"
+      ? `Quero ser avisado quando o concurso de ${cargo} abrir.`
+      : `Vi que as inscrições para o concurso de ${cargo} estão abertas e quero ajuda para me preparar.`;
+  }
+
+  function renderPreview() {
+    $("previewSlot").innerHTML = hcRenderConcursoCard(currentFormData());
+  }
+
+  function renderList() {
+    const slot = $("listSlot");
+    $("countItems").textContent = items.length;
+    $("countExport").textContent = items.length;
+    if (items.length === 0) {
+      slot.innerHTML = '<p style="font-size:13px;color:var(--ink-muted);">Nenhum item adicionado ainda nesta sessão.</p>';
+      return;
+    }
+    slot.innerHTML = items.map((it, i) => `
+      <div class="list-row">
+        <div class="info">
+          <strong>${it.cargo || "(sem cargo)"} — ${it.orgao || "(sem órgão)"}</strong>
+          <span>${it.status === "previsto" ? "Previsto" : "Aberto"}${it.exemplo ? " · exemplo" : ""}</span>
+        </div>
+        <div class="row-actions">
+          <button type="button" data-edit="${i}">Editar</button>
+          <button type="button" class="danger" data-remove="${i}">Remover</button>
+        </div>
+      </div>
+    `).join("");
+
+    slot.querySelectorAll("[data-edit]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const it = items[parseInt(btn.dataset.edit, 10)];
+        fStatus.value = it.status; fOrgao.value = it.orgao; fBanca.value = it.banca;
+        fCargo.value = it.cargo; fVagas.value = it.vagas; fEscolaridade.value = it.escolaridade;
+        fSalario.value = it.salario; fPrazo.value = it.prazo; fImagem.value = it.imagem;
+        fMsg.value = it.whatsappMsg; fMsg.dataset.touched = "1"; fExemplo.checked = !!it.exemplo;
+        items.splice(parseInt(btn.dataset.edit, 10), 1);
+        updatePrazoLabel(); renderPreview(); renderList();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+    slot.querySelectorAll("[data-remove]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        items.splice(parseInt(btn.dataset.remove, 10), 1);
+        renderList();
+      });
+    });
+  }
+
+  [fStatus, fOrgao, fBanca, fCargo, fVagas, fEscolaridade, fSalario, fPrazo, fImagem, fExemplo].forEach((el) => {
+    el.addEventListener("input", () => { updatePrazoLabel(); suggestMsg(); renderPreview(); });
+  });
+  fMsg.addEventListener("input", () => { fMsg.dataset.touched = "1"; renderPreview(); });
+
+  $("btnAdd").addEventListener("click", () => {
+    if (!fCargo.value.trim() || !fOrgao.value.trim()) {
+      alert("Preencha ao menos o cargo e o órgão/instituição antes de adicionar.");
+      return;
+    }
+    items.push(currentFormData());
+    renderList();
+    $("btnClear").click();
+  });
+
+  $("btnClear").addEventListener("click", () => {
+    [fOrgao, fBanca, fCargo, fVagas, fEscolaridade, fSalario, fPrazo, fImagem, fMsg].forEach((el) => el.value = "");
+    fExemplo.checked = false;
+    fMsg.dataset.touched = "0";
+    fStatus.value = "aberto";
+    updatePrazoLabel();
+    renderPreview();
+  });
+
+  $("fileLoad").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        if (!Array.isArray(data)) throw new Error("Formato inválido");
+        items = data;
+        renderList();
+        alert(items.length + " concurso(s) carregado(s) do arquivo. Use \"Adicionar à lista\" para incluir novos, ou remova os que quiser antes de baixar.");
+      } catch (err) {
+        alert("Não foi possível ler este arquivo. Confirme que é o concursos.json exportado por esta ferramenta.");
+      }
+    };
+    reader.readAsText(file, "utf-8");
+  });
+
+  $("btnDownload").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(items, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "concursos.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // Tenta pré-carregar o concursos.json atual do site automaticamente
+  // (só funciona quando publicado ou servido por um servidor local —
+  // veja o README se abrir este arquivo direto do computador).
+  fetch("assets/data/concursos.json")
+    .then((r) => r.json())
+    .then((data) => { items = data; renderList(); })
+    .catch(() => { /* segue com a lista vazia, sem problema */ });
+
+  updatePrazoLabel();
+  renderPreview();
+  renderList();
+</script>
+
+</body>
+</html>
